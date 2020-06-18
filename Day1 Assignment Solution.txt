@@ -1,0 +1,191 @@
+==========Assignment 1: Automate the below URL with Takesscreenshot and Robot class. ==========
+=========================================================================================
+
+Takesscreenshot class:-
+package Sample;
+
+import java.io.File;
+import java.io.IOException;
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+import org.openqa.selenium.OutputType;
+
+import org.openqa.selenium.TakesScreenshot;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+//import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class AlertsExample {
+
+	@Test
+	 public void TestJavaS1()
+	{
+		  System.setProperty("webdriver.chrome.driver","C:\\Users\\Lenovo\\Downloads\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+
+	driver.manage().window().maximize();
+
+
+	driver.get("http://demo.automationtesting.in/Alerts.html");
+
+
+	File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+	try {
+
+	FileUtils.copyFile(src, new File("C:\\Selenium\\error1.png"));
+	}
+
+	catch (IOException e)
+	{ 
+		System.out.println(e.getMessage());
+	}
+	}
+	
+}
+
+==========With Robot class:==========
+
+package Sample;
+
+import java.awt.AWTException;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+import org.openqa.selenium.OutputType;
+
+import org.openqa.selenium.TakesScreenshot;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+
+public class RobotClassDemo {
+
+	@Test
+	 public void TestJavaS1() throws AWTException, IOException
+	{
+		  System.setProperty("webdriver.chrome.driver","C:\\Users\\Lenovo\\Downloads\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+
+	driver.manage().window().maximize();
+
+
+	driver.get("http://demo.automationtesting.in/Alerts.html");
+
+
+	Robot robot1=new Robot();
+	 
+	 Dimension screen_size=Toolkit.getDefaultToolkit().getScreenSize();
+
+	  Rectangle rect1=new Rectangle(screen_size);
+	  
+	  BufferedImage Source=robot1.createScreenCapture(rect1);
+	  
+	 File destination= new File("C:\\Selenium\\Screens1.png");
+	  
+	 
+	 ImageIO.write(Source, "png", destination);
+	 
+	 
+	
+	}
+}
+
+==========================================================================================
+==========Assignment 2: Automate the below URL with Un-ordered List==========
+
+package com.amolsoftwares;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class DemoTest {
+
+	public static void main(String[] args) throws InterruptedException {
+
+		System.setProperty("webdriver.chrome.driver", "D:\\Videos\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		
+		//Assignment 2: Automate the below URL with Un-ordered List
+		driver.get("http://demo.automationtesting.in/AutoComplete.html");
+		
+		WebElement ls = driver.findElement(By.id("searchbox"));
+		ls.sendKeys("I");
+		Thread.sleep(2000);
+		
+		List <WebElement> ele1 = driver.findElements(By.xpath("//*[@id='ui-id-1']/li"));
+
+		int list_size= ele1.size();
+		
+		System.out.println(list_size);
+		
+		for (WebElement welement:ele1) {
+			if (welement.getText().equalsIgnoreCase("India")) {
+				welement.click();
+				break;
+			}
+		}
+
+	}
+
+}
+
+
+==========================================================================================
+=======Assignment 3: Automate the below URL with Ordered List=======
+
+package com.amolsoftwares;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class DemoTest {
+
+	public static void main(String[] args) {
+
+		System.setProperty("webdriver.chrome.driver", "D:\\Videos\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		
+		//Assignment 3: Automate the below URL with Ordered List
+		driver.get("http://demo.automationtesting.in/Selectable.html");
+		
+		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div[1]/ul/li[2]/a")).click();
+		
+		List <WebElement> ele1 = driver.findElements(By.xpath("//*[@id=\"Serialize\"]/ul/li"));
+		
+		int lsize = ele1.size();
+		System.out.println(lsize);
+		
+		Actions act1 = new Actions(driver);
+		
+		act1.keyDown(Keys.CONTROL)
+		.click(ele1.get(1))
+		.click(ele1.get(4))
+		.click(ele1.get(6))
+		.build().perform();
+
+	}
+
+}
+=========================================================================================
+

@@ -1,0 +1,157 @@
+//Assignment 1: Using data Driven
+package com.amolsoftwares;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+
+public class DemoTest {
+
+	public static void main(String[] args) throws InterruptedException, BiffException, IOException {
+
+		System.setProperty("webdriver.chrome.driver", "D:\\Videos\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		
+		//Assignment 1:
+		
+		Workbook w1 = Workbook.getWorkbook(new File("D:\\Atos Syntel Online Session\\Selenium Advanced\\DemoData.xls"));
+		Sheet s1 = w1.getSheet(0);
+		
+		for( int i = 1; i< s1.getRows(); i++) {
+			
+			String mailId = s1.getCell(0,i).getContents();
+			String pass = s1.getCell(1,i).getContents();
+			
+			driver.get("http://demo.automationtesting.in/SignIn.html");
+			
+			driver.findElement(By.xpath("/html/body/div/div/div[2]/input")).sendKeys(mailId);
+			driver.findElement(By.xpath("/html/body/div/div/div[3]/input")).sendKeys(pass);
+			
+			driver.findElement(By.xpath("//img[@id='enterbtn']")).click();
+			
+		}
+
+	}
+
+}
+=========================================================================================
+//Assignment 2: Using POM
+
+//DemoTest .java
+
+package com.amolsoftwares;
+
+import java.io.IOException;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import jxl.read.biff.BiffException;
+
+public class DemoTest {
+
+	public static void main(String[] args) throws InterruptedException, BiffException, IOException {
+
+		System.setProperty("webdriver.chrome.driver", "D:\\Videos\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		
+		driver.get("http://demo.automationtesting.in/SignIn.html");
+
+		//Assignment 2:
+		Locators.email(driver).sendKeys("Amol@gamil.com");
+		Locators.pass(driver).sendKeys("Password");
+		Thread.sleep(2000);
+		Locators.loginB(driver).click();
+		
+		
+
+	}
+
+}
+
+//Locatos.java
+package com.amolsoftwares;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class Locators {
+public static WebElement email(WebDriver d) {
+		return d.findElement(By.xpath("/html/body/div/div/div[2]/input"));
+	}
+	
+	public static WebElement pass(WebDriver d) {
+		return d.findElement(By.xpath("/html/body/div/div/div[3]/input"));
+	}
+	
+	public static WebElement loginB(WebDriver d) {
+		return d.findElement(By.xpath("//*[@id='enterbtn']"));
+	}
+}
+
+=========================================================================================
+//Assignment 3: using PageFactory
+
+//DemoTest.java
+package com.amolsoftwares;
+
+import java.io.IOException;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.PageFactory;
+
+import jxl.read.biff.BiffException;
+
+public class DemoTest {
+
+	public static void main(String[] args) throws InterruptedException, BiffException, IOException {
+
+		System.setProperty("webdriver.chrome.driver", "D:\\Videos\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		
+		driver.get("http://demo.automationtesting.in/SignIn.html");
+
+		//Assignment 3: 
+		PageFactory.initElements(driver, Locators.class);
+		
+		Locators.email.sendKeys("Amol@gmail.com");
+		Locators.pass.sendKeys("MyPassword");
+		Locators.loginB.click();
+		
+
+	}
+
+}
+
+//Locators.java
+package com.amolsoftwares;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class Locators {
+	
+	
+	@FindBy(xpath = "/html/body/div/div/div[2]/input")
+	public static WebElement email;
+	
+	@FindBy(xpath = "/html/body/div/div/div[3]/input")
+	public static WebElement pass;
+	
+	@FindBy(xpath = "//*[@id='enterbtn']")
+	public static WebElement loginB;
+	 
+
+}
+
+
+
